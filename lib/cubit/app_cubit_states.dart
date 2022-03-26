@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_cubit/models/data_model.dart';
 
 abstract class CubitStates extends Equatable{
 
@@ -26,4 +27,23 @@ class WelcomeState extends CubitStates{
   // List<Object?> get props => throw UnimplementedError();
   List<Object?> get props => [];
   
+}
+
+class loadingState extends CubitStates{
+  //triggered when you are trying the load the data
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}
+class loadedState extends CubitStates{
+  //triggered when you have loaded the data
+
+  loadedState(this.places);
+  List<DataModel> places;
+  @override
+  // TODO: implement props
+  List<Object?> get props => [places]; // here we provide the data, so that the cubit will know that 
+  //the data has been changed and it needs to rebuild the UI
+
 }

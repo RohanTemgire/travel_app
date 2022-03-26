@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cubit/cubit/app_cubits.dart';
 import 'package:flutter_cubit/widgets/responsive_button.dart';
 
 import '../widgets/app_large_text.dart';
@@ -39,7 +41,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 right: 20,
               ),
               child: Row(
-                mainAxisAlignment : MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +63,21 @@ class _WelcomePageState extends State<WelcomePage> {
                       const SizedBox(
                         height: 40,
                       ),
-                      ResponsiveButton(),
+                      GestureDetector(
+                        onTap: () {
+                          BlocProvider.of<AppCubits>(context).getData();
+                        },
+                        child: Container(
+                          width: 150,
+                          child: Row(
+                            //we are using row cause, we are using flexible in responsive button.
+                            //so flexible needs a parent widget to be row or column
+                            children: [
+                              ResponsiveButton(width: 120),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   Column(
@@ -69,10 +85,12 @@ class _WelcomePageState extends State<WelcomePage> {
                       return Container(
                         margin: const EdgeInsets.only(bottom: 2),
                         width: 8,
-                        height: index==indexDots? 25:8,
+                        height: index == indexDots ? 25 : 8,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: index==indexDots?AppColors.mainColor:AppColors.mainColor.withOpacity(0.3),
+                          color: index == indexDots
+                              ? AppColors.mainColor
+                              : AppColors.mainColor.withOpacity(0.3),
                         ),
                       );
                     }),

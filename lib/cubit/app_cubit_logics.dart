@@ -2,10 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cubit/cubit/app_cubit_states.dart';
-import 'package:flutter_cubit/pages/welcome_page.dart';
 
-import './cubit_states.dart';
+
+
+import '../cubit/app_cubit_states.dart';
+import '../pages/home_page.dart';
+import '../pages/welcome_page.dart';
+import 'app_cubits.dart';
+
 
 class AppCubitLogics extends StatefulWidget {
   const AppCubitLogics({Key? key}) : super(key: key);
@@ -24,6 +28,10 @@ class _AppCubicLogicsState extends State<AppCubitLogics> {
           // using this builder we can check on the states
           if (state is WelcomeState) {
             return WelcomePage();
+          } if (state is loadedState) {
+            return HomePage();
+          }if (state is loadingState) {
+            return const Center(child: CircularProgressIndicator(),);
           } else {
             return Container();
           }
