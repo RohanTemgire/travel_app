@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:flutter_cubit/cubit/app_cubit_states.dart';
+import 'package:flutter_cubit/cubit/app_cubits.dart';
 import 'package:flutter_cubit/misc/colors.dart';
 import 'package:flutter_cubit/widgets/app_large_text.dart';
 import 'package:flutter_cubit/widgets/app_text.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,153 +29,177 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     // we have to write it here cause vsync requires a context to rebuild so it takes the context  of this widget
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: BlocBuilder<AppCubits, CubitStates>(
+          //using blocbuilder we can access the state
+          builder: (_, state) {
+            // with this state keyword we could access the props from the app_cubit_states file
+            if (state == LoadedState) {
+              var info  = state;
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(
-                      Icons.menu_rounded,
-                      size: 30,
-                      color: Colors.black54,
-                    ),
-                    Expanded(child: Container()),
                     Container(
-                      margin: const EdgeInsets.only(right: 20),
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey.withOpacity(0.5)),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Container(
-                child: AppLargeText(
-                  text: 'Discover',
-                ),
-                margin: const EdgeInsets.only(left: 20),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              //tabbar
-              Container(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: TabBar(
-                    labelPadding: const EdgeInsets.only(left: 20, right: 20),
-                    controller: _tabController,
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.grey,
-                    isScrollable: true,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicator:
-                        CircleTabIndicator(color: AppColors.mainColor, radius: 4),
-                    //for our custom indicator to be built we have to define a class which extends decoration.
-                    //bc it requires a decoration widget we create one
-                    tabs: [
-                      Tab(text: 'Places'),
-                      Tab(text: 'Inspiration'),
-                      Tab(text: 'Emotions'),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 20),
-                height: 300,
-                width: double.maxFinite,
-                child: TabBarView(controller: _tabController, children: [
-                  ListView.builder(
-                      itemCount: 3,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.only(right: 15, top: 10),
-                          width: 200,
-                          height: 300,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            image: const DecorationImage(
-                                image: AssetImage('img/mountain.jpeg'),
-                                fit: BoxFit.cover),
+                      padding: const EdgeInsets.only(top: 20, left: 20),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Icon(
+                            Icons.menu_rounded,
+                            size: 30,
+                            color: Colors.black54,
                           ),
-                        );
-                      }),
-                  const Text('there'),
-                  const Text('bye'),
-                ]),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppLargeText(
-                      text: 'Explore more',
-                      size: 22,
+                          Expanded(child: Container()),
+                          Container(
+                            margin: const EdgeInsets.only(right: 20),
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey.withOpacity(0.5)),
+                          )
+                        ],
+                      ),
                     ),
-                    AppText(
-                      text: 'See all',
-                      color: AppColors.textColor1,
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 120,
-                width: double.maxFinite,
-                margin: const EdgeInsets.only(left: 20),
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 4,
-                    itemBuilder: (_, index) {
-                      return Container(
-                        margin: const EdgeInsets.only(right: 20),
-                        child: Column(
-                          children: [
-                            Container(
-                              // margin: const EdgeInsets.only(right: 50),
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
-                                image: DecorationImage(
-                                    image: AssetImage('img/'+_images.keys.elementAt(index)),
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                            const SizedBox(height: 5,),
-                            Container(
-                              child: AppText(
-                                text: _images.values.elementAt(index),
-                                color: AppColors.textColor2,
-                              ),
-                            ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      child: AppLargeText(
+                        text: 'Discover',
+                      ),
+                      margin: const EdgeInsets.only(left: 20),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    //tabbar
+                    Container(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TabBar(
+                          labelPadding:
+                              const EdgeInsets.only(left: 20, right: 20),
+                          controller: _tabController,
+                          labelColor: Colors.black,
+                          unselectedLabelColor: Colors.grey,
+                          isScrollable: true,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicator: CircleTabIndicator(
+                              color: AppColors.mainColor, radius: 4),
+                          //for our custom indicator to be built we have to define a class which extends decoration.
+                          //bc it requires a decoration widget we create one
+                          tabs: [
+                            Tab(text: 'Places'),
+                            Tab(text: 'Inspiration'),
+                            Tab(text: 'Emotions'),
                           ],
                         ),
-                      );
-                    }),
-              )
-            ],
-          ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 20),
+                      height: 300,
+                      width: double.maxFinite,
+                      child: TabBarView(controller: _tabController, children: [
+                        ListView.builder(
+                            itemCount: 3,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin:
+                                    const EdgeInsets.only(right: 15, top: 10),
+                                width: 200,
+                                height: 300,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  image: const DecorationImage(
+                                      image: NetworkImage('http://mark.bslmeiyu.com/uploads/'),
+                                      fit: BoxFit.cover),
+                                ),
+                              );
+                            }),
+                        const Text('there'),
+                        const Text('bye'),
+                      ]),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppLargeText(
+                            text: 'Explore more',
+                            size: 22,
+                          ),
+                          AppText(
+                            text: 'See all',
+                            color: AppColors.textColor1,
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 120,
+                      width: double.maxFinite,
+                      margin: const EdgeInsets.only(left: 20),
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 4,
+                          itemBuilder: (_, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(right: 20),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    // margin: const EdgeInsets.only(right: 50),
+                                    width: 80,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white,
+                                      image: DecorationImage(
+                                          image: AssetImage('img/' +
+                                              _images.keys.elementAt(index)),
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    child: AppText(
+                                      text: _images.values.elementAt(index),
+                                      color: AppColors.textColor2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    )
+                  ],
+                ),
+              );
+            } else {
+              print(state);
+              return Container(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: AppLargeText(
+                    text: 'Something went wrong, plz try again later',
+                  ),
+                ),
+              );
+            }
+          },
         ),
       ),
     );

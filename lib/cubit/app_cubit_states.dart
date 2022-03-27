@@ -2,8 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_cubit/models/data_model.dart';
 
 abstract class CubitStates extends Equatable{
-
+  
 }
+
 
 //every cubit app should have one inital state
 //when we first create a cubit we should pass a state class or a stateFunction
@@ -12,7 +13,7 @@ class InitialState extends CubitStates{
   @override
   // TODO: implement props
   // List<Object?> get props => throw UnimplementedError();
-  List<Object?> get props => [
+  List<Object> get props => [
     // here you should put the data that should be changed
     //as states hold the data. and then these data should change and rebuilt the UI
     
@@ -25,7 +26,7 @@ class WelcomeState extends CubitStates{
   @override
   // TODO: implement props
   // List<Object?> get props => throw UnimplementedError();
-  List<Object?> get props => [];
+  List<Object> get props => [];
   
 }
 
@@ -33,17 +34,18 @@ class loadingState extends CubitStates{
   //triggered when you are trying the load the data
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object> get props => [];
 
 }
-class loadedState extends CubitStates{
+class LoadedState extends CubitStates{
   //triggered when you have loaded the data
 
-  loadedState(this.places);
-  List<DataModel> places;
+  LoadedState(this.places);
+  final List<DataModel> places;
   @override
   // TODO: implement props
-  List<Object?> get props => [places]; // here we provide the data, so that the cubit will know that 
+  List<Object> get props => [places]; // here we provide the data, so that the cubit will know that 
   //the data has been changed and it needs to rebuild the UI
 
 }
+
